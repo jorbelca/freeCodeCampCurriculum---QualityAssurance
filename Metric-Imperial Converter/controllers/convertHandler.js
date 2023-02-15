@@ -2,7 +2,7 @@ const ConvertHandler = {
 
   getNum: function (input) {
     let result;
-    const regex = new RegExp(/([0-9./]+)/gm)
+    const regex = new RegExp(/([0-9.]+)/)
     const regexFrac = new RegExp(/([/]+)/gm)
     if (regexFrac.test(input)) {
       let num1 = input.split('/')[0]
@@ -10,8 +10,14 @@ const ConvertHandler = {
       return result = num1 / Number(regex.exec(num2)[0])
     }
 
-    if (!input) result = 1
-    result = Number(regex.exec(input)[0])
+    if (regex.test(input)) {
+      result = Number(regex.exec(input)[0])
+
+    }
+    if (!regex.exec(input)) {
+      result = 1
+    }
+
 
     return result;
   },
