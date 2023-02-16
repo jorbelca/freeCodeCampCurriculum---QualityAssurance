@@ -37,17 +37,30 @@ app.route('/api/convert').get(function (req, res) {
 
   let initNum = ConvertHandler.getNum(input)
   let initUnit = ConvertHandler.getUnit(input)
-  let returnNum = ConvertHandler.convert(initNum,initUnit)
   let returnUnit = ConvertHandler.getReturnUnit(initUnit)
-  let string = ConvertHandler.getString(initNum, initUnit, returnNum, returnUnit)
-  let result = {
-    initNum: initNum,
-    initUnit: initUnit,
-    returnNum: returnNum,
-    returnUnit: returnUnit,
-    string: string
+  if (initNum.Error && returnUnit.Error) {
+    let result = { Error: 'invalid number and unit' }
+    return res.send(result)
   }
-  res.send(result)
+
+  if (initNum.Error) {
+    return res.send(initNum)
+  }
+
+  if (returnUnit.Error) {
+    return res.send(returnUnit)
+  } else {
+    let returnNum = ConvertHandler.convert(initNum, initUnit)
+    let string = ConvertHandler.getString(initNum, initUnit, returnNum, returnUnit)
+    let result = {
+      initNum: initNum,
+      initUnit: initUnit,
+      returnNum: returnNum,
+      returnUnit: returnUnit,
+      string: string
+    }
+    res.send(result)
+  }
 });
 
 

@@ -3,11 +3,13 @@ const ConvertHandler = {
   getNum: function (input) {
     let result;
     const regex = new RegExp(/([0-9.]+)/)
-    const regexFrac = new RegExp(/([/]+)/gm)
+    const regexFrac = new RegExp(/[\/]/g)
+
     if (regexFrac.test(input)) {
+      if (input.match(regexFrac).length >= 2) { return { Error: 'invalid number' } }
       let num1 = input.split('/')[0]
       let num2 = input.split('/')[1]
-      return result = num1 / Number(regex.exec(num2)[0])
+      return result = parseFloat(+num1 / Number(regex.exec(num2)[0])).toFixed(5)
     }
 
     if (regex.test(input)) {
@@ -38,6 +40,7 @@ const ConvertHandler = {
       kg: 'lbs',
       lbs: 'kg'
     }
+    if (!result[initUnit]) return { Error: 'invalid unit' }
     return result[initUnit];
   },
 
@@ -60,14 +63,14 @@ const ConvertHandler = {
     const lbsToKg = 0.453592;
     const KgTolbs = 2.20462
     const miToKm = 1.60934;
-    const KmTomi = 1.60934
+    const KmTomi = 0.621371
     let result;
-    if (initUnit === 'gal') result = galToL * initNum
-    if (initUnit === 'L') result = Ltogal * initNum
-    if (initUnit === 'lbs') result = lbsToKg * initNum
-    if (initUnit === 'kg') result = KgTolbs * initNum
-    if (initUnit === 'mi') result = miToKm * initNum
-    if (initUnit === 'km') result = KmTomi * initNum
+    if (initUnit === 'gal') result = parseFloat(galToL * initNum).toFixed(5)
+    if (initUnit === 'L') result = parseFloat(Ltogal * initNum).toFixed(5)
+    if (initUnit === 'lbs') result = parseFloat(lbsToKg * initNum).toFixed(5)
+    if (initUnit === 'kg') result = parseFloat(KgTolbs * initNum).toFixed(5)
+    if (initUnit === 'mi') result = parseFloat(miToKm * initNum).toFixed(5)
+    if (initUnit === 'km') result = parseFloat(KmTomi * initNum).toFixed(5)
 
     return result;
   },
