@@ -32,23 +32,22 @@ app.route('/')
 fccTestingRoutes(app);
 
 //Routing for API 
-app.route('/api/convert').get(function (req, res) {
+app.route('/api/convert').get(function(req, res) {
   const { input } = req.query
 
   let initNum = ConvertHandler.getNum(input)
   let initUnit = ConvertHandler.getUnit(input)
   let returnUnit = ConvertHandler.getReturnUnit(initUnit)
   if (initNum.Error && returnUnit.Error) {
-    let result = { Error: 'invalid number and unit' }
-    return res.send(result)
+    return res.json('invalid number and unit')
   }
 
   if (initNum.Error) {
-    return res.send(initNum)
+    return res.json('invalid number')
   }
 
   if (returnUnit.Error) {
-    return res.send(returnUnit)
+    return res.json('invalid unit')
   } else {
     let returnNum = ConvertHandler.convert(initNum, initUnit)
     let string = ConvertHandler.getString(initNum, initUnit, returnNum, returnUnit)
