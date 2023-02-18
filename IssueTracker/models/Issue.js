@@ -5,7 +5,7 @@ const IssueSchema = new mongoose.Schema(
   {
     project: {
       type: String,
-      required: [true, "Please provide a projectname"],
+      required: [false, "Please provide a projectname"],
       maxlength: 50
     },
     issue_title: {
@@ -36,9 +36,12 @@ const IssueSchema = new mongoose.Schema(
     open: {
       type: Boolean,
       default: true
-    }
-  },
-  { timestamps: true }, { collection: dbCollection }
+    },
+    created_on: { type: Date, default: Date.now() },
+    updated_on: { type: Date, default: Date.now() }
+  }, { versionKey: false, collection: dbCollection }
+
 );
 
+mongoose.set('strictQuery', true)
 module.exports = mongoose.model("Issue", IssueSchema);

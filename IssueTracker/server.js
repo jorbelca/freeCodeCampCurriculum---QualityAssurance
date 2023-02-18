@@ -50,11 +50,9 @@ app.use(function (req, res, next) {
 });
 
 async function DB() {
-  // Use connect method to connect to the server
   try {
     connectDB()
     console.log('Connected successfully to server');
-
   }
   catch { (console.error) }
   finally { () => client.close() }
