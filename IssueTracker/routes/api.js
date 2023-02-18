@@ -4,58 +4,65 @@ const Issue = require("../models/Issue");
 module.exports = function (app) {
 
   app.route('/api/issues/:project')
-
     .get(async function (req, res) {
       let project = req.params.project;
 
-      const issues = await Issue.find({ ...req.query });
+      const issues = await Issue.find(req.query);
       res.status(200).json(issues)
-
+      if (!issues) {
+        throw new NotFoundError(`No project called ${req.params.project} found`);
+      }
     })
 
-    .post(function (req, res) {
+    .post(function (req, res, err) {
       // req.body.project = req.params.project;
       const { issue_title, issue_text, created_by, assigned_to, status_text } = req.body
+      if (!issue_title || !issue_text || !created_by) {
+        return res.status(400).json({ error: "required field(s) missing" });
+      }
       var issue = new Issue(req.body)
 
       issue.save(function (err, post) {
         if (err) {
-          res.status(400).send(`{ error: 'required field(s) missing' }`)
-          return console.log(err);
+          console.log(err);
+          return res.status(400).json({ error: 'required field(s) missing' })
         }
-
-        res.status(201).json(post)
+        return res.status(201).json(post)
       })
 
     })
 
-    .put(function (req, res) {
+    .put(async function (req, res) {
       let project = req.params.project;
-      if (!req.body._id) res.status(400).json(`{ error: 'missing _id' }`)
-      if (req.body._id && (!req.body.issue_title && !req.body.issue_text && !req.body.created_by && !req.body.assigned_to && !req.body.status_text)) res.status(400).json(`{ error: 'no update field(s) sent', '_id': ${req.body._id} `)
-      try {
-        Issue.findByIdAndUpdate(req.body._id, req.body, { updated_on: Date.now() }).then(() => res.status(200).json(`{ result: 'successfully updated', '_id': ${req.body._id} }`))
+      let id = req.body._id
+
+      if (!id) { return res.status(400).json({ error: "missing _id" }) }
+      if (id && (!req.body.issue_title && !req.body.issue_text && !req.body.created_by && !req.body.assigned_to && !req.body.status_text)) {
+        return res.status(400).json({ error: "no update field(s) sent", _id: id })
       }
-      catch (e) {
-        console.log('ERROR', e.message);
-        res.status(400).json(`{ error: 'could not update', '_id': ${req.body._id} }`)
-        return console.log(e);
+
+      try {
+        const response = await Issue.findByIdAndUpdate(req.body._id, { ...req.body, updated_on: Date.now() })
+        return res.status(200).json({ result: "successfully updated", _id: id })
+      }
+      catch (err) {
+        console.log('UPDATEERROR', err);
+        return res.status(400).json({ error: "could not update", _id: id })
+
       }
     })
 
     .delete(async function (req, res) {
       let project = req.params.project;
+      let id = req.body._id
+      if (!id) res.status(400).json({ error: "missing _id", _id: id })
 
-      if (!req.body._id) res.status(400).json(`{ error: 'missing _id' }`)
-      let response
       try {
-        response = await Issue.deleteOne({ _id: req.body._id })
-        console.log(response.deletedCount)
-        if (response.deletedCount === 1) { res.status(200).json(`{ result: 'successfully deleted', _id: ${req.body._id} }`) }
-        
-      } catch (e) {
-        res.status(400).json(`{ error: 'could not delete', _id: ${req.body._id} }`)
-        return console.log('DELETEERROR', e);
+        const deletedIssue = await Issue.findByIdAndDelete(id)
+        if (deletedIssue) res.status(200).json({ result: "successfully deleted", _id: id })
+      } catch (err) {
+        console.log('DELETEERROR', err);
+        return res.status(400).json(`{ error: 'could not delete', _id: ${id} }`)
       }
     });
 
