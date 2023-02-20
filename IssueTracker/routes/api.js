@@ -8,10 +8,11 @@ module.exports = function (app) {
       let project = req.params.project;
 
       const issues = await Issue.find(req.query);
-      res.status(200).json(issues)
+
       if (!issues) {
         throw new NotFoundError(`No project called ${req.params.project} found`);
       }
+      res.status(200).json(issues)
     })
 
     .post(function (req, res, err) {
@@ -25,7 +26,7 @@ module.exports = function (app) {
       issue.save(function (err, post) {
         if (err) {
           console.log(err);
-          return res.status(400).json({ error: 'required field(s) missing' })
+          return res.status(400).json({ error: "required field(s) missing" })
         }
         return res.status(201).json(post)
       })
@@ -55,14 +56,14 @@ module.exports = function (app) {
     .delete(async function (req, res) {
       let project = req.params.project;
       let id = req.body._id
-      if (!id) res.status(400).json({ error: "missing _id", _id: id })
+      if (!id) res.status(400).json({ error: "missing _id" })
 
       try {
         const deletedIssue = await Issue.findByIdAndDelete(id)
         if (deletedIssue) res.status(200).json({ result: "successfully deleted", _id: id })
       } catch (err) {
         console.log('DELETEERROR', err);
-        return res.status(400).json(`{ error: 'could not delete', _id: ${id} }`)
+        return res.status(400).json({ error: "could not delete", _id: id })
       }
     });
 

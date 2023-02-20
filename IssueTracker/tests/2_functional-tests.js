@@ -59,7 +59,7 @@ suite('Functional Tests', function () {
       .end(function (err, res) {
         assert.equal(res.status, 400);
         console.log(res.text);
-        expect(res.text).to.contain({ error: 'required field(s) missing' });
+        expect(res.text).to.contain('{"error":"required field(s) missing"}');
         done();
       });
   });
@@ -112,7 +112,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        expect(res.text).to.include(`result: 'successfully updated'`).to.include(`'_id': ${ID}`)
+        expect(res.text).to.include('"result":"successfully updated"').to.include('"_id":"'+ ID+'"')
         done();
       });
   });
@@ -129,7 +129,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        expect(res.text).to.include(`result: 'successfully updated'`).to.include(`'_id': ${ID}`)
+        expect(res.text).to.include('"result":"successfully updated"').to.include('"_id":"'+ ID+'"')
         done();
       });
   });
@@ -145,7 +145,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 400);
-        expect(res.text).to.include(`{ error: 'missing _id' }`)
+        expect(res.text).to.include('"error":"missing _id"')
         done();
       });
   });
@@ -160,7 +160,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 400);
-        expect(res.text).to.include(`{ error: 'no update field(s) sent'`).to.include(`'_id': ${ID}`)
+        expect(res.text).to.include('"error":"no update field(s) sent"').to.include('"_id":"'+ ID+'"')
         done();
       });
   });
@@ -178,7 +178,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 400);
-        expect(res.text).to.include(`{ error: 'could not update'`).to.include(`_id: ${badID} `)
+        expect(res.text).to.include('"error":"could not update"').to.include('"_id":"'+ badID+'"')
         done();
       });
   });
@@ -191,7 +191,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 400);
-        expect(res.text).to.include(`{ error: 'missing _id' }`)
+        expect(res.text).to.include('"error":"missing _id"')
         done();
       });
   });
@@ -207,7 +207,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 400);
-        expect(res.text).to.include(` error: 'could not delete'`).to.include(`_id: ${badID}`)
+        expect(res.text).to.include('"error":"could not delete"').to.include('"_id":"'+ badID+'"')
         done();
       });
   });
@@ -222,7 +222,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        expect(res.text).to.include(` result: 'successfully deleted'`).to.include(`_id:${ID}`)
+        expect(res.text).to.include('"result":"successfully deleted"').to.include('"_id":"'+ ID+'"')
         done();
       });
   });
