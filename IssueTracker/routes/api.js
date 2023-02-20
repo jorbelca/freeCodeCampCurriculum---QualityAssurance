@@ -38,7 +38,6 @@ module.exports = function (app) {
 
       issue.save(function (err, post) {
         if (err) {
-          console.log(err);
           return res.json({ error: "required field(s) missing" })
         }
         return res.json(post)
@@ -63,7 +62,6 @@ module.exports = function (app) {
         return res.json({ result: "successfully updated", _id: id })
       }
       catch (err) {
-        console.log('UPDATEERROR', err);
         return res.json({ error: "could not update", _id: id })
       }
     })
@@ -78,7 +76,6 @@ module.exports = function (app) {
         if (!deletedIssue) return res.json({ error: "could not delete", _id: id })
         if (deletedIssue) return res.json({ result: "successfully deleted", _id: id })
       } catch (err) {
-        console.log('DELETEERROR', err);
         return res.json({ error: "could not delete", _id: id })
       }
     });
