@@ -5,7 +5,7 @@ const IssueSchema = new mongoose.Schema(
   {
     project: {
       type: String,
-      required: [false, "Please provide a projectname"],
+      required: [true, "Please provide a projectname"],
       maxlength: 50
     },
     issue_title: {
