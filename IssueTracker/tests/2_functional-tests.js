@@ -256,7 +256,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(error);
         } else {
-          
+          assert.equal(res.status, 200);
           testId = res.body._id
           done();
         }
@@ -276,7 +276,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(error);
         } else {
-
+          assert.equal(res.status, 200);
           done();
         }
       });
@@ -291,6 +291,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(error);
         } else {
+          assert.equal(res.status, 200);
           assert.equal(res.text, '{"error":"required field(s) missing"}');
           done();
         }
@@ -304,7 +305,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           done();
         }
       });
@@ -317,7 +318,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           done();
         }
       });
@@ -348,7 +349,7 @@ suite("Functional Tests", function () {
         if (err || !testId) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"result":"successfully updated","_id":"' + testId + '"}'
@@ -375,7 +376,7 @@ suite("Functional Tests", function () {
         if (err || !testId) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"result":"successfully updated","_id":"' + testId + '"}'
@@ -396,7 +397,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           assert.equal(res.text, '{"error":"missing _id"}');
           done();
         }
@@ -414,7 +415,7 @@ suite("Functional Tests", function () {
         if (err || !testId) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"error":"no update field(s) sent","_id":"' + testId + '"}'
@@ -436,7 +437,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
-
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"error":"could not update","_id":"' + invalidId + '"}'
@@ -457,6 +458,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"result":"successfully deleted","_id":"' + testId + '"}'
@@ -477,6 +479,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
+          assert.equal(res.status, 200);
           assert.equal(
             res.text,
             '{"error":"could not delete","_id":"' + invalidId + '"}'
@@ -495,6 +498,7 @@ suite("Functional Tests", function () {
         if (err) {
           done(err);
         } else {
+          assert.equal(res.status, 200);
           assert.equal(res.text, '{"error":"missing _id"}');
           done();
         }
