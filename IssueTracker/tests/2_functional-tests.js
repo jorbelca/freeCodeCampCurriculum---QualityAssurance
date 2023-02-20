@@ -58,7 +58,6 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert
-        console.log(res.text);
         expect(res.text).to.contain('{"error":"required field(s) missing"}');
         done();
       });
