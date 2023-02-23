@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 const dbCollection = 'stockChecker'
 
 const StockSchema = new mongoose.Schema(
@@ -17,4 +17,4 @@ const StockSchema = new mongoose.Schema(
 );
 
 mongoose.set('strictQuery', true);
-module.exports = mongoose.model("Stock", StockSchema);
+export default mongoose.model("Stock", StockSchema);
