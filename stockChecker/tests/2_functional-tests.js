@@ -1,25 +1,85 @@
-const chaiHttp = require('chai-http');
-const chai = require('chai');
-const assert = chai.assert;
-const server = require('../server');
+import chaiHttp from 'chai-http';
+import chai from 'chai';
+import pkg from 'chai';
+const { assert, use, request } = pkg;
 
-chai.use(chaiHttp);
+import server from '../server.js';
+
+use(chaiHttp);
+
+var IP = (Math.floor(Math.random() * 255) + 1) + "." + (Math.floor(Math.random() * 255)) + "." + (Math.floor(Math.random() * 255)) + "." + (Math.floor(Math.random() * 255));
+const symbol1 = 'F'
+const symbol2 = "TSLA"
+let firstLikes
 
 suite('Functional Tests', function () {
-  
-  suite('POST /api/books with title => create book object/expect book object', function () {
-    test('Test POST /api/books with title', function (done) {
-      chai.request(server)
-        .post('/api/books')
-        .send({ title: 'TEST' })
+  test('Viewing one stock: GET request to /api/stock-prices/', function (done) {
+    chai.request(server)
+      .get('/api/stock-prices?stock=' + symbol1)
 
-        .end(function (err, res) {
-          ID = res.body._id
-          assert.equal(res.status, 200);
-          assert.isObject(res.body, 'response should be an object');
-          assert.property(res.body, 'title', 'The new book should contain a title');
-          done();
-        });
-    });
-  })
+      .end(function (err, res) {
+        firstLikes = res.body.stockData.likes
+        assert.equal(res.status, 200);
+        assert.isObject(res.body, 'response should be an object');
+        assert.property(res.body, 'stockData', 'The response should contain the stockData key');
+        assert.equal(res.body.stockData.stock, symbol1);
+        done();
+      });
+  });
+
+  test('Viewing one stock and liking it: GET request to /api/stock-prices/', function (done) {
+    chai.request(server)
+      .get('/api/stock-prices?stock=' + symbol1 + '&like=true')
+
+      .end(function (err, res) {
+        assert.equal(res.status, 200);
+        assert.isObject(res.body, 'response should be an object');
+        assert.property(res.body, 'stockData', 'The response should contain the stockData key');
+        assert.equal(res.body.stockData.likes, firstLikes + 1);
+        done();
+      });
+  });
+
+  test('Viewing the same stock and liking it again: GET request to /api/stock-prices/', function (done) {
+    chai.request(server)
+      .get('/api/stock-prices?stock=' + symbol1 + '&like=true')
+
+      .end(function (err, res) {
+        assert.equal(res.status, 200);
+        assert.isObject(res.body, 'response should be an object');
+        assert.property(res.body, 'stockData', 'The response should contain the stockData key');
+        assert.equal(res.body.stockData.likes, firstLikes + 1);
+        done();
+      });
+  });
+
+
+
+  test('Viewing two stocks: GET request to /api/stock-prices/', function (done) {
+    chai.request(server)
+      .get('/api/stock-prices?stock=' + symbol1 + '&stock=' + symbol2)
+
+      .end(function (err, res) {
+        assert.equal(res.status, 200);
+        assert.isObject(res.body, 'response should be an object');
+        assert.property(res.body, 'stockData', 'The response should contain the stockData key');
+        assert.propertyVal(res.body.stockData[0], 'stock', symbol1);
+        assert.propertyVal(res.body.stockData[1], 'stock', symbol2);
+        done();
+      });
+  });
+
+  test.skip('Viewing two stocks and liking them: GET request to /api/stock-prices/', function (done) {
+    chai.request(server)
+      .get('/api/stock-prices?stock=' + symbol1 + '&stock=' + symbol2 + '&like=true')
+
+      .end(function (err, res) {
+        assert.equal(res.status, 200);
+        assert.isObject(res.body, 'response should be an object');
+        assert.property(res.body, 'stockData', 'The response should contain the stockData key');
+        assert.equal(res.body.stockData.stock, symbol);
+        done();
+      });
+  });
+
 });

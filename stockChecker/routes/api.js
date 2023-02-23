@@ -11,27 +11,38 @@ export default function (app) {
       let { stock, like } = req.query
       if (typeof stock == 'string') stock = [stock]
       let response = []
-      stock.map(async (sigleStock) => {
+      stock.map(async (singleStock) => {
         let likes
-        const { latestPrice: LP, symbol: SY } = await fetchAPI(sigleStock)
+        const { latestPrice: LP, symbol: SY } = await fetchAPI(singleStock)
 
         const DB = await Stock.findOne({ symbol: SY })
 
-        console.log(DB, IP);
+
         if (like === 'true' && !DB) {
-          const newDbRegister = await Stock.create({ symbol: symbol, likes: [IP] })
-          console.log(newDbRegister, '1');
+          const newDbRegister = await Stock.create({ symbol: SY, likes: [IP] })
           if (newDbRegister) likes = newDbRegister.likes.length
-          return res.status(200).json({ stockData: response })
+
         } else if (like === 'true' && DB) {
-          DB.likes.push(IP)
-          DB.save()
+          DB.likes.map(async (n) => {
+            let res = await checkUser(req.headers['x-forwarded-for'] || req.socket.remoteAddress, n)
+            if (!res) {
+              DB.likes.push(IP)
+              DB.save()
+            }
+          })
           likes = DB.likes.length
-          console.log('2');
         } else {
           if (DB) likes = DB.likes.length
           if (!DB) likes = 0
-          console.log('3');
+        }
+
+
+        if (!SY && !LP) {
+          return res.status(200).json({
+            stockData: {
+              error: "external source error"
+            }
+          })
         }
 
         if (stock.length === 1) {
