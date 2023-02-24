@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 const saltRounds = 10;
 
 async function checkUser(IP, hash) {
-  console.log(IP);
   if (IP && hash) {
     try {
       const result = bcrypt.compare(IP, hash)

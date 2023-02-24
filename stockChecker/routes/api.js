@@ -23,14 +23,17 @@ export default function (app) {
           if (newDbRegister) likes = newDbRegister.likes.length
 
         } else if (like === 'true' && DB) {
+          likes = DB.likes.length
           DB.likes.map(async (n) => {
             let res = await checkUser(req.headers['x-forwarded-for'] || req.socket.remoteAddress, n)
+            console.log(res);
             if (!res) {
               DB.likes.push(IP)
-              DB.save()
+              const saved = await DB.save()
+              console.log(saved);
+              likes++
             }
           })
-          likes = DB.likes.length
         } else {
           if (DB) likes = DB.likes.length
           if (!DB) likes = 0
