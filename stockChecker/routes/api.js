@@ -24,16 +24,24 @@ export default function (app) {
 
         } else if (like === 'true' && DB) {
           likes = DB.likes.length
-          DB.likes.map(async (n) => {
+          let IPinDb = false
+
+
+          for await (let n of DB.likes) {
             let res = await checkUser(req.headers['x-forwarded-for'] || req.socket.remoteAddress, n)
-            console.log(res);
-            if (!res) {
-              DB.likes.push(IP)
-              const saved = await DB.save()
-              console.log(saved);
-              likes++
+
+            if (res) {
+              IPinDb = true
             }
-          })
+          }
+
+
+          if (!IPinDb) {
+            DB.likes.push(IP)
+            await DB.save()
+            likes++
+          }
+
         } else {
           if (DB) likes = DB.likes.length
           if (!DB) likes = 0
