@@ -17,11 +17,13 @@ const ThreadSchema = new mongoose.Schema(
     },
     reported: {
       type: Boolean,
-      default: false
+      default: false,
+      select: false
     },
     delete_password: {
       type: String,
       required: [true, "Please provide a delete password"],
+      select: false
     },
     replies: [{
       type: mongoose.Schema.Types.ObjectId,
