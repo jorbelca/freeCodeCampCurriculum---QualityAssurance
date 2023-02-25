@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const dbCollection = 'messageBoard'
+const dbCollection = 'messageBoard-Threads'
 
 const ThreadSchema = new mongoose.Schema(
   {
@@ -23,10 +23,10 @@ const ThreadSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a delete password"],
     },
-    replies: {
-      type: Array,
+    replies: [{
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Reply'
-    }
+    }]
 
   }, { versionKey: false, collection: dbCollection }
 

@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-const dbCollection = 'messageBoard'
+const dbCollection = 'messageBoard-Replies'
 
 const ReplySchema = new mongoose.Schema(
   {
-    thread_id: {
+    thread: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: 'Thread'
     },
     text: {
@@ -13,10 +12,6 @@ const ReplySchema = new mongoose.Schema(
       required: [true, "Please provide a text"],
     },
     created_on: {
-      type: Date,
-      default: Date.now()
-    },
-    bumped_on: {
       type: Date,
       default: Date.now()
     },
