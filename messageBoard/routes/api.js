@@ -62,9 +62,8 @@ module.exports = function (app) {
 
       try {
         const reported = await Thread.findByIdAndUpdate(report_id, { $set: { reported: true } }, { returnDocument: 'after' })
-        console.log(reported);
+
         if (reported) {
-          res.redirect('/api/threads/' + board)
           return res.status(200).json('reported')
         }
         if (!reported) return res.status(400).json('error')
@@ -80,13 +79,12 @@ module.exports = function (app) {
 
       try {
         const singleThread = await Thread.findById(thread_id)
-        console.log("DELETE THREAD", singleThread, delete_password);
 
         if (singleThread.delete_password === delete_password) {
           singleThread.delete()
           return res.status(200).json('success')
         }
-        return res.status(401).json('incorrect password')
+        return res.json('incorrect password')
       } catch (error) {
         return res.status(401).json(error)
       }
@@ -98,13 +96,10 @@ module.exports = function (app) {
   app.route('/api/replies/:board')
     .get(async (req, res) => {
       const { thread_id } = req.query
-
+      console.log("GET REPLIES");
       try {
         let principalThread = await Thread.findOne({ _id: thread_id }).populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 } },
         )
-
-        console.log("GET REPLIES");
-
         if (!principalThread) return res.status(400).json('error')
 
         if (principalThread) return res.status(200).json(principalThread)
@@ -114,6 +109,7 @@ module.exports = function (app) {
     })
 
     .post(async (req, res) => {
+      const { board } = req.params
       const { text, delete_password, thread_id } = req.body
 
       const newReply = new Reply({
@@ -136,7 +132,7 @@ module.exports = function (app) {
       }
 
       console.log("POST REPLY");
-      return res.status(201).json('new reply')
+      return res.redirect('/b/' + board)
     })
 
     .put(async (req, res) => {
@@ -162,10 +158,7 @@ module.exports = function (app) {
           singleReply.save()
           return res.status(200).json('success')
         }
-        if (singleReply.delete_password !== delete_password) {
-          console.log("DELETE REPLY", singleReply.delete_password, delete_password);
-          return res.status(401).json('incorrect password')
-        }
+        return res.json('incorrect password')
       } catch (error) {
         return res.status(401).json(error)
       }
