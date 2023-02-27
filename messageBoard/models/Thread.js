@@ -23,7 +23,6 @@ const ThreadSchema = new mongoose.Schema(
     delete_password: {
       type: String,
       required: [true, "Please provide a delete password"],
-      select: false
     },
     replies: [{
       type: mongoose.Schema.Types.ObjectId,

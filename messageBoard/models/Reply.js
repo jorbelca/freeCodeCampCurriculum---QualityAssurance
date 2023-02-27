@@ -23,7 +23,6 @@ const ReplySchema = new mongoose.Schema(
     , delete_password: {
       type: String,
       required: [true, "Please provide a delete password"],
-      select: false
     },
 
 
