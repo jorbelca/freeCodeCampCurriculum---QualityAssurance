@@ -16,7 +16,6 @@ module.exports = function (app) {
       if (locale != 'american-to-british' && locale != 'british-to-american') return res.status(400).json({ error: 'Invalid value for locale field' })
 
       let response = await translator.translate(locale, text)
-      console.log(response);
       if (response) return res.status(200).json({ translation: response })
     });
 };
