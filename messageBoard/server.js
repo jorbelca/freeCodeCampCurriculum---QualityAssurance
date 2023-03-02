@@ -8,8 +8,23 @@ const apiRoutes = require('./routes/api.js');
 const fccTestingRoutes = require('./routes/fcctesting.js');
 const runner = require('./test-runner');
 const connectDB = require('./dbConnection.js');
+const helmet = require('helmet');
 
 const app = express();
+
+app.use(
+  helmet.dnsPrefetchControl({ allow: false }),
+  helmet.referrerPolicy({ policy: "no-referrer" }),
+  helmet.frameguard({ action: "sameorigin" })
+);
+
+app.use(function (req, res, next) {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
+  );
+  next();
+});
 
 app.use('/public', express.static(process.cwd() + '/public'));
 

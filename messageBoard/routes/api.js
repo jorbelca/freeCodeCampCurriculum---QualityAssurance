@@ -64,7 +64,7 @@ module.exports = function (app) {
         const reported = await Thread.findByIdAndUpdate(report_id, { $set: { reported: true } }, { returnDocument: 'after' })
 
         if (reported) {
-          return res.status(200).json('reported')
+          return res.status(200).send('reported')
         }
         if (!reported) return res.status(400).json('error')
 
@@ -82,9 +82,9 @@ module.exports = function (app) {
 
         if (singleThread.delete_password === delete_password) {
           singleThread.delete()
-          return res.status(200).json('success')
+          return res.status(200).send('success')
         }
-        return res.json('incorrect password')
+        return res.send('incorrect password')
       } catch (error) {
         return res.status(401).json(error)
       }
@@ -140,7 +140,7 @@ module.exports = function (app) {
       try {
         const reported = await Reply.findByIdAndUpdate(reply_id, { $set: { reported: true } }, { returnDocument: 'after' })
 
-        if (reported) return res.status(200).json('reported')
+        if (reported) return res.status(200).send('reported')
         if (!reported) return res.status(400).json('error')
       } catch (error) {
         return res.status(400).json(error)
@@ -156,9 +156,9 @@ module.exports = function (app) {
         if (singleReply.delete_password === delete_password) {
           singleReply.text = '[deleted]'
           singleReply.save()
-          return res.status(200).json('success')
+          return res.status(200).send('success')
         }
-        return res.json('incorrect password')
+        return res.send('incorrect password')
       } catch (error) {
         return res.status(401).json(error)
       }

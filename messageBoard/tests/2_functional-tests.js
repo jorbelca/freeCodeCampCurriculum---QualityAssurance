@@ -55,7 +55,7 @@ suite('Functional Tests', function () {
       .end(function (err, res) {
 
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"reported"');
+        assert.equal(res.text, 'reported');
         done();
       });
   });
@@ -100,7 +100,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"reported"');
+        assert.equal(res.text, 'reported');
         done();
       });
   });
@@ -115,7 +115,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"incorrect password"');
+        assert.equal(res.text, 'incorrect password');
         done();
       });
   });
@@ -129,7 +129,7 @@ suite('Functional Tests', function () {
       })
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"success"');
+        assert.equal(res.text, 'success');
         done();
       });
   });
@@ -144,7 +144,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"incorrect password"');
+        assert.equal(res.text, 'incorrect password');
         done();
       });
   });
@@ -159,7 +159,7 @@ suite('Functional Tests', function () {
 
       .end(function (err, res) {
         assert.equal(res.status, 200);
-        assert.equal(res.text, '"success"');
+        assert.equal(res.text, 'success');
         done();
       });
   });
