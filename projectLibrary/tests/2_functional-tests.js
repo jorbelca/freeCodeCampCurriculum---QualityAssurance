@@ -59,8 +59,8 @@ suite('Functional Tests', function () {
           .send()
 
           .end(function (err, res) {
-            assert.equal(res.status, 400);
-            assert.equal(res.text, '{"error":"missing required field title"}')
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'missing required field title')
             done();
           });
       });
@@ -90,8 +90,8 @@ suite('Functional Tests', function () {
 
 
           .end(function (err, res) {
-            assert.equal(res.status, 400);
-            assert.equal(res.text, '{"error":"no book exists"}');
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no book exists');
             done();
           });
       });
@@ -139,8 +139,8 @@ suite('Functional Tests', function () {
           .send({ comment: com })
 
           .end(function (err, res) {
-            assert.equal(res.status, 400);
-            assert.equal(res.text, '{"error":"missing required field comment"}')
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'missing required field comment')
             done();
           });
       });
@@ -152,8 +152,8 @@ suite('Functional Tests', function () {
           .send({ comment: com })
 
           .end(function (err, res) {
-            assert.equal(res.status, 400);
-            assert.equal(res.text, '{"error":"no book exists"}')
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no book exists')
             done();
           });
       });
@@ -179,8 +179,8 @@ suite('Functional Tests', function () {
 
 
           .end(function (err, res) {
-            assert.equal(res.status, 400);
-            assert.equal(res.text, '{"error":"no book exists"}')
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no book exists')
             done();
           });
       });
