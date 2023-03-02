@@ -14,7 +14,7 @@ const app = express();
 
 app.use(
   helmet.dnsPrefetchControl({ allow: false }),
-  helmet.referrerPolicy({ policy: "no-referrer" }),
+  helmet.referrerPolicy({ policy: "origin" }),
   helmet.frameguard({ action: "sameorigin" })
 );
 

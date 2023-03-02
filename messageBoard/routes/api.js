@@ -18,7 +18,6 @@ module.exports = function (app) {
             bumped_on: thread.bumped_on,
             replies: thread.replies.reduce((accumulator, currentValue, currentIndex) => {
               if (currentIndex <= 2) {
-
                 accumulator.push(currentValue);
               }
               return accumulator;
@@ -63,9 +62,7 @@ module.exports = function (app) {
       try {
         const reported = await Thread.findByIdAndUpdate(report_id, { $set: { reported: true } }, { returnDocument: 'after' })
 
-        if (reported) {
-          return res.status(200).send('reported')
-        }
+        if (reported) return res.status(200).send('reported')
         if (!reported) return res.status(400).json('error')
 
       } catch (error) {
