@@ -1,5 +1,5 @@
 'use strict';
-import * as dotenv from 'dotenv' 
+import * as dotenv from 'dotenv'
 dotenv.config()
 import express from 'express';
 import pkg from 'body-parser';
@@ -13,6 +13,15 @@ import emiter from './test-runner.js';
 import connectDB from './dbConnection.js';
 
 const app = express();
+
+
+app.use(function (req, res, next) {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
+  );
+  next();
+});
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
