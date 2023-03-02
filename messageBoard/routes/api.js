@@ -9,7 +9,7 @@ module.exports = function (app) {
       const { board } = req.params
 
       try {
-        let threads = await Thread.find({ board: board }).populate('replies')
+        let threads = await Thread.find({ board: board }).sort({ created_on: '-1' }).limit(10).populate({ path: 'replies', options: { sort: [{ created_on: '-1' }] } })
         let response = threads.map((thread) => {
           return {
             _id: thread._id,
@@ -26,7 +26,7 @@ module.exports = function (app) {
           }
         })
         if (!threads || !response) return res.status(400).json('error')
-        console.log('GET THREADS');
+        console.log('GET THREADS', threads);
         return res.status(200).json(response)
       } catch (error) {
         return res.status(400).json(error)
@@ -95,7 +95,7 @@ module.exports = function (app) {
       const { thread_id } = req.query
       console.log("GET REPLIES");
       try {
-        let principalThread = await Thread.findOne({ _id: thread_id }).populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 } },
+        let principalThread = await Thread.findOne({ _id: thread_id }).populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 }, options: { sort: [{ created_on: '-1' }] } },
         )
         if (!principalThread) return res.status(400).json('error')
 

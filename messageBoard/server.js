@@ -14,17 +14,17 @@ const app = express();
 
 app.use(
   helmet.dnsPrefetchControl({ allow: false }),
-  helmet.referrerPolicy({ policy: "origin" }),
+  helmet.referrerPolicy({ policy: "same-origin" }),
   helmet.frameguard({ action: "sameorigin" })
 );
 
-app.use(function (req, res, next) {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
-  );
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.setHeader(
+//     'Content-Security-Policy',
+//     "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
+//   );
+//   next();
+// });
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
