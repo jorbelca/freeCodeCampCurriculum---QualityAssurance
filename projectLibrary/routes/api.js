@@ -76,7 +76,7 @@ module.exports = function (app) {
       try {
         const deletionRes = await Book.deleteOne({ _id: bookid })
         if (!deletionRes) return res.send("no book exists")
-        return res.status(200).json('delete successful')
+        return res.status(200).send('delete successful')
       } catch (error) {
         return res.send("no book exists")
       }
