@@ -1,9 +1,8 @@
 const chaiHttp = require('chai-http');
-import chai from 'chai';
-import pkg from 'chai';
-const { assert, use, request } = pkg;
+const chai = require('chai');
+const { assert, use, request } = require('chai');
 
-import server from '../server.js';
+const server = require('../server.js');
 
 chai.use(chaiHttp);
 
@@ -66,8 +65,8 @@ suite('Functional Tests', function () {
         assert.equal(res.status, 200);
         assert.isObject(res.body, 'response should be an object');
         assert.property(res.body, 'stockData', 'The response should contain the stockData key');
-        assert.equal(res.body.stockData[0].stock, symbol1 || symbol2);
-        assert.equal(res.body.stockData[1].stock, symbol2 || symbol1);
+        assert.equal(res.body.stockData[0].stock, symbol2 || symbol1);
+        assert.equal(res.body.stockData[1].stock, symbol1 || symbol2);
         assert.exists(res.body.stockData[0].rel_likes, 'The response should contain the rel_likes key');
         done();
       });

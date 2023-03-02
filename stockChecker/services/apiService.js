@@ -2,8 +2,6 @@ const fetch = require('node-fetch');
 
 require('dotenv').config()
 
-
-
 let url = process.env.API_SERVICE;
 
 const fetchAPI = async (symbol) => {

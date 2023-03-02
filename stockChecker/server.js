@@ -75,4 +75,4 @@ const listener = app.listen(process.env.PORT || 3000, function () {
   }
 });
 
-module.export = app; //for testing
+module.exports = app; //for testing
