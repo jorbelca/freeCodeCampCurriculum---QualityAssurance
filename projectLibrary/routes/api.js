@@ -59,10 +59,11 @@ module.exports = function (app) {
 
       try {
         let book = await Book.findById(bookid)
+        if (!book) return res.send('no book exists')
         if (book) {
           book.comments.push(comment)
           const bookSaved = await book.save()
-          if (!book) return res.send('no book exists')
+          if (!bookSaved) return res.send('no book exists')
           if (bookSaved) return res.status(200).json({ _id: bookSaved._id, title: bookSaved.book_title, comments: bookSaved.comments })
         }
       } catch (error) {
@@ -72,11 +73,19 @@ module.exports = function (app) {
 
     .delete(async function (req, res) {
       let bookid = req.params.id;
+
+
+      if (bookid === undefined || bookid === '') {
+        return res.json({ error: 'id is required' });
+      }
+
       //if successful response will be 'delete successful'
       try {
-        const deletionRes = await Book.deleteOne({ _id: bookid })
+        const deletionRes = await Book.findOneAndDelete({ _id: bookid })
+
         if (!deletionRes) return res.send('no book exists')
-        return res.status(200).send('delete successful')
+
+        if (deletionRes) return res.status(200).send('delete successful')
       } catch (error) {
         return res.send('no book exists')
       }
