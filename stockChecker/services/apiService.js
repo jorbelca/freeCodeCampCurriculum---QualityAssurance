@@ -1,6 +1,8 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
-import { default as fetch } from 'node-fetch';
+const fetch = require('node-fetch');
+
+require('dotenv').config()
+
+
 
 let url = process.env.API_SERVICE;
 
@@ -15,4 +17,4 @@ const fetchAPI = async (symbol) => {
 }
 
 
-export default fetchAPI
+module.exports = fetchAPI

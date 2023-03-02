@@ -1,9 +1,9 @@
 'use strict';
-import checkUser from "../bcrypt/bcrypt.js";
-import Stock from "../models/Stock.js";
-import fetchAPI from "../services/apiService.js";
+const checkUser = require("../bcrypt/bcrypt.js");
+const Stock = require("../models/Stock.js");
+const fetchAPI = require("../services/apiService.js");
 
-export default function (app) {
+module.exports = function (app) {
 
   app.route('/api/stock-prices')
     .get(async function (req, res) {

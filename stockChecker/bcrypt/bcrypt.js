@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 async function checkUser(IP, hash) {
@@ -17,4 +17,4 @@ async function checkUser(IP, hash) {
     return error
   }
 }
-export default checkUser
+module.exports = checkUser

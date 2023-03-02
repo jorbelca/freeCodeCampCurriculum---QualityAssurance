@@ -1,10 +1,9 @@
-import * as dotenv from 'dotenv' 
-dotenv.config()
-import { connect } from "mongoose";
+require('dotenv').config()
+const { connect } = require("mongoose");
 const URI = process.env.MONGO_URI
 
 const connectDB = () => {
   return connect(URI);
 };
 
-export default connectDB;
+module.exports = connectDB;

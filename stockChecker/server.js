@@ -1,16 +1,15 @@
 'use strict';
-import * as dotenv from 'dotenv'
-dotenv.config()
-import express from 'express';
-import pkg from 'body-parser';
+require('dotenv').config()
+const express = require('express')
+const pkg = require('body-parser');
 const { json, urlencoded } = pkg;
 
-import cors from 'cors';
+const cors = require('cors');
 
-import apiRoutes from './routes/api.js';
-import fccTestingRoutes from './routes/fcctesting.js';
-import emiter from './test-runner.js';
-import connectDB from './dbConnection.js';
+const apiRoutes = require('./routes/api.js');
+const fccTestingRoutes = require('./routes/fcctesting.js');
+const emiter = require('./test-runner.js');
+const connectDB = require('./dbConnection.js');
 
 const app = express();
 
@@ -76,4 +75,4 @@ const listener = app.listen(process.env.PORT || 3000, function () {
   }
 });
 
-export default app; //for testing
+module.export = app; //for testing

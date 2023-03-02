@@ -25,12 +25,12 @@
 *
 */
 
-import analyser from './assertion-analyser.js';
-import { EventEmitter } from 'events';
+const analyser = require('./assertion-analyser.js');
+const { EventEmitter } = require('events');
 
-import Mocha from 'mocha';
-import fs from 'fs';
-import path from 'path'
+const Mocha = require('mocha');
+const fs = require('fs');
+const path = require('path')
 
 var mocha = new Mocha();
 var testDir = './tests'
@@ -86,7 +86,7 @@ emitter.run = function () {
   }
 };
 
-export default emitter;
+module.exports = emitter;
 
 /*
  * Mocha.runner Events:

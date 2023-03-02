@@ -1,4 +1,4 @@
-import chaiHttp from 'chai-http';
+const chaiHttp = require('chai-http');
 import chai from 'chai';
 import pkg from 'chai';
 const { assert, use, request } = pkg;
