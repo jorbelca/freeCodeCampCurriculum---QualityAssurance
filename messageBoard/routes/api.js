@@ -26,7 +26,7 @@ module.exports = function (app) {
           }
         })
         if (!threads || !response) return res.status(400).json('error')
-        console.log('GET THREADS');
+
         return res.status(200).json(response)
       } catch (error) {
         return res.status(400).json(error)
@@ -46,7 +46,7 @@ module.exports = function (app) {
 
         const saveInDb = await newThread.save()
 
-        console.log("POST THREAD");
+
 
         if (!saveInDb) return res.status(400).send('error')
         return res.redirect('/b/' + board)
@@ -61,14 +61,13 @@ module.exports = function (app) {
 
       try {
         const reported = await Thread.findByIdAndUpdate({ _id: report_id }, { $set: { reported: true } })
-        console.log("PuT THREAD");
 
-//         if (!reported) return res.status(400).send('error')
+
+        if (!reported) return res.status(400).send('error')
         return res.status(200).send('reported')
 
       } catch (error) {
-          return res.status(200).send('reported')
-//         return res.status(400).json(error)
+        return res.status(400).json(error)
       }
 
     })
@@ -99,7 +98,7 @@ module.exports = function (app) {
       try {
         let principalThread = await Thread.findOne({ _id: thread_id }).select("text created_on bumped_on _id replies").populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 }, options: { sort: [{ created_on: '-1' }] } },
         )
-        console.log("GET REPLIES");
+
         if (!principalThread) return res.status(400).json('error')
 
         if (principalThread) return res.status(200).json(principalThread)
@@ -132,7 +131,6 @@ module.exports = function (app) {
         return res.status(400).json(error)
       }
 
-      console.log("POST REPLY");
       return res.redirect('/b/' + board)
     })
 
