@@ -9,7 +9,7 @@ module.exports = function (app) {
       const { board } = req.params
 
       try {
-        let threads = await Thread.find({ board: board }).select("text created_on bumped_on _id replies").sort({ bumped_on: '-1' }).limit(10).populate({ path: 'replies', options: { sort: [{ created_on: '-1' }] } })
+        let threads = await Thread.find({ board: board }).select("text created_on bumped_on _id replies").sort({ bumped_on: '-1' }).limit(10).populate({ path: 'replies', select: '_id thread text created_on', options: { sort: [{ created_on: '-1' }] } })
         let response = threads.map((thread) => {
           return {
             _id: thread._id,
@@ -60,7 +60,7 @@ module.exports = function (app) {
       const { report_id } = req.body
 
       try {
-        const reported = await Thread.findByIdAndUpdate(report_id, { $set: { reported: true } }, { returnDocument: 'after' })
+        const reported = await Thread.findByIdAndUpdate({ _id: report_id }, { $set: { reported: true } }, { returnDocument: 'after' })
         console.log("PuT THREAD");
         if (reported) return res.status(200).send('reported')
         if (!reported) return res.status(400).send('error')
