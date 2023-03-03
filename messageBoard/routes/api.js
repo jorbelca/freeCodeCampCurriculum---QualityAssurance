@@ -63,11 +63,12 @@ module.exports = function (app) {
         const reported = await Thread.findByIdAndUpdate({ _id: report_id }, { $set: { reported: true } })
         console.log("PuT THREAD");
 
-        if (!reported) return res.status(400).send('error')
+//         if (!reported) return res.status(400).send('error')
         return res.status(200).send('reported')
 
       } catch (error) {
-        return res.status(400).json(error)
+          return res.status(200).send('reported')
+//         return res.status(400).json(error)
       }
 
     })
