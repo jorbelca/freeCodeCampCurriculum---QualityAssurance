@@ -9,7 +9,7 @@ module.exports = function (app) {
       const { board } = req.params
 
       try {
-        let threads = await Thread.find({ board: board }).sort({ created_on: '-1' }).limit(10).populate({ path: 'replies', options: { sort: [{ created_on: '-1' }] } })
+        let threads = await Thread.find({ board: board }).select("text created_on bumped_on _id replies").sort({ bumped_on: '-1' }).limit(10).populate({ path: 'replies', options: { sort: [{ created_on: '-1' }] } })
         let response = threads.map((thread) => {
           return {
             _id: thread._id,
@@ -26,7 +26,7 @@ module.exports = function (app) {
           }
         })
         if (!threads || !response) return res.status(400).json('error')
-        console.log('GET THREADS', threads);
+        console.log('GET THREADS');
         return res.status(200).json(response)
       } catch (error) {
         return res.status(400).json(error)
@@ -48,7 +48,7 @@ module.exports = function (app) {
 
         console.log("POST THREAD");
 
-        if (!saveInDb) return res.status(400).json('error')
+        if (!saveInDb) return res.status(400).send('error')
         return res.redirect('/b/' + board)
 
       } catch (error) {
@@ -61,9 +61,9 @@ module.exports = function (app) {
 
       try {
         const reported = await Thread.findByIdAndUpdate(report_id, { $set: { reported: true } }, { returnDocument: 'after' })
-
+        console.log("PuT THREAD");
         if (reported) return res.status(200).send('reported')
-        if (!reported) return res.status(400).json('error')
+        if (!reported) return res.status(400).send('error')
 
       } catch (error) {
         return res.status(400).json(error)
@@ -93,10 +93,11 @@ module.exports = function (app) {
   app.route('/api/replies/:board')
     .get(async (req, res) => {
       const { thread_id } = req.query
-      console.log("GET REPLIES");
+
       try {
-        let principalThread = await Thread.findOne({ _id: thread_id }).populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 }, options: { sort: [{ created_on: '-1' }] } },
+        let principalThread = await Thread.findOne({ _id: thread_id }).select("text created_on bumped_on _id replies").populate({ path: 'replies', select: { "text": 1, "created_on": 1, "thread": 1 }, options: { sort: [{ created_on: '-1' }] } },
         )
+        console.log("GET REPLIES");
         if (!principalThread) return res.status(400).json('error')
 
         if (principalThread) return res.status(200).json(principalThread)
