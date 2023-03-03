@@ -60,7 +60,7 @@ module.exports = function (app) {
       const { report_id } = req.body
 
       try {
-        const reported = await Thread.findByIdAndUpdate({ _id: report_id }, { $set: { reported: true } }, { returnDocument: 'after' })
+        const reported = await Thread.findByIdAndUpdate({ _id: report_id }, { $set: { reported: true } })
         console.log("PuT THREAD");
 
         if (!reported) return res.status(400).send('error')
@@ -123,7 +123,7 @@ module.exports = function (app) {
 
         if (saveInDb) {
           updateThread.replies.push(saveInDb._id)
-          updateThread.bumped_on = Date.now()
+          updateThread.bumped_on = saveInDb.created_on
           updateThread.save()
         }
 
@@ -138,7 +138,7 @@ module.exports = function (app) {
     .put(async (req, res) => {
       const { reply_id } = req.body
       try {
-        const reported = await Reply.findByIdAndUpdate(reply_id, { $set: { reported: true } }, { returnDocument: 'after' })
+        const reported = await Reply.findByIdAndUpdate(reply_id, { $set: { reported: true } })
 
         if (reported) return res.status(200).send('reported')
         if (!reported) return res.status(400).json('error')
